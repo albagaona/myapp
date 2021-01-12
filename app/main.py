@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route('/product', methods=['GET', 'POST'])
 def list_all_products():
     '''This view manage the CRUD of products'''
-    printf("Hola mundo")
+    print("Hola mundo")
     if request.method == 'GET':
         response = get_products()
         return jsonify(response)
