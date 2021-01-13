@@ -1,10 +1,29 @@
-from flask import jsonify
-from flask import Flask
+from flask import jsonify, request, Flask
+from catalog import get_products, create_product
+
 app = Flask(__name__)
+
+@app.route('/product', methods=['GET', 'POST'])
+def list_all_products():
+    '''This view manage the CRUD of products'''
+    print("Hola mundo")
+    if request.method == 'GET':
+        response = get_products()
+        return jsonify(response)
+    if request.method == 'POST':
+        data = request.get_json()
+        create_product(
+                data['sku'],
+                data['title'],
+                data['long_description'],
+                data['price_euro'])
+        return jsonify({ "status": "ok" })
+
+
 
 @app.route('/hello')
 def hello_world():
-    message = "Hola Mundo, soy Python! Ahora con CloudBuild y hablando JSON. Commit"
+    message = "Hola Mundo, soy Python! Ahora con CloudBuild y hablando JSON"
     response = {
             "message": message,
             "length": len(message)
