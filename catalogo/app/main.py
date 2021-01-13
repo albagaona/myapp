@@ -1,5 +1,6 @@
 from flask import jsonify, request, Flask
-from catalog import get_products, create_product
+from catalog import get_products, create_product, get_product
+import redis
 
 app = Flask(__name__)
 
@@ -15,7 +16,7 @@ def list_all_products():
     if request.method == 'POST':
         data = request.get_json()
         create_product(
-            data['sku'],
+            None,
             data['title'],
             data['long_description'],
             data['price_euro'])
