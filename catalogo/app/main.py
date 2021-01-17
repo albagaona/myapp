@@ -21,7 +21,7 @@ else:
 
 @app.route('/product/<sku>', methods=['GET', ])
 def get_product_by_sku(sku):
-    product = redis_client.hgetall(sku)
+    product = redis_client.hgetall(sku) if redis_client else None
     if not product:
         product = get_product(sku)
         if not product:
