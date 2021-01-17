@@ -2,6 +2,7 @@ DROP DATABASE if exists db;
 CREATE DATABASE db;
 \connect db;
 
+
 CREATE EXTENSION "uuid-ossp";
 CREATE TABLE productos (
 	   sku uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -9,6 +10,7 @@ CREATE TABLE productos (
 	   title varchar(80),
 	   long_description text
 );
+
 
 INSERT INTO productos (price, title, long_description) VALUES
     (12.4, 'Ejemplo 1', 'Producto ejemplar 1'),
