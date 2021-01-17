@@ -1,5 +1,5 @@
-import sys
-import uuid
+from time import sleep
+
 from db.database import get_db
 
 
@@ -32,6 +32,12 @@ def get_product(sku):
 
     cursor.execute(postgre_sql_select_query, (sku, ))
     product = cursor.fetchone()
+
+    if not product:
+        return None
+
+    # Simular que tarda mucho esta operacion
+    sleep(0.200)
 
     return {
         "sku": product[0],
