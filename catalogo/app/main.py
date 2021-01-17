@@ -7,11 +7,17 @@ import redis
 app = Flask(__name__)
 CORS(app)
 
-redis_client = redis.Redis(
-        host=os.getenv('REDIS_HOST'), 
-        port=os.getenv('REDIS_PORT'), 
-        db=0, decode_responses=True
-)
+redis_host = os.environ.get('REDIS_HOST', None)
+redis_port = os.environ.get('REDIS_PORT', None)
+
+if redis_host and redis_port:
+    redis_client = redis.Redis(
+            host=os.getenv('REDIS_HOST'),
+            port=os.getenv('REDIS_PORT'),
+            db=0, decode_responses=True
+    )
+else:
+    redis_client = None
 
 @app.route('/product/<sku>', methods=['GET', ])
 def get_product_by_sku(sku):
@@ -23,7 +29,8 @@ def get_product_by_sku(sku):
                 "error": f"SKU {sku} not found!"
             }), 404)
         product['cache'] = 'miss'
-        redis_client.hmset(product['sku'], product)
+        if redis_client:
+            redis_client.hmset(product['sku'], product)
     else:
         pass
         product['cache'] = 'hit'
